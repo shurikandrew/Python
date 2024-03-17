@@ -589,7 +589,56 @@ These are fundamental constructs in Python programming that enable you to contro
   The program will generate the list of prime numbers up to 20, perform calculations, and write the results to 'prime_numbers.txt'.
 """
 
+with open("output.txt", "r") as output_file:
+    file_content = output_file.read()
 
+    file_content = file_content.replace("{", "")
+    file_content = file_content.replace("[", "")
+    file_content = file_content.replace("(", "")
+    file_content = file_content.replace("}", "")
+    file_content = file_content.replace("]", "")
+    file_content = file_content.replace(")", "")
+    file_content = file_content.replace(":", "")
+    file_content = file_content.replace(",", "")
+    file_content = file_content.replace("\n", " ")
+    result = []
+    for str in file_content.split(" "):
+        if str.isdigit():
+            result.append(int(str))
+    if len(result) == 0:
+        print("There are no integers inside output.txt!")
+    else:
+        result = sorted(result)
+        largest_int = result[len(result) - 1]
+        print("The largest number: ", largest_int)
+        prime_list = []
+        flag = True
+        for number in range(2, largest_int):
+            for i in range(2, number):
+                if number % i == 0:
+                    flag = False
+            if flag:
+                prime_list.append(number)
+            flag = True
+        print(prime_list)
+        prime_sum = 0
+        for i in prime_list:
+            prime_sum += i
+
+        print("The sum is: ", prime_sum)
+        print("The smallest prime number is: ", prime_list[0])
+        print("The largest prime number is: ", prime_list[len(prime_list) - 1])
+        flag = True
+        for number in range(2, largest_int):
+            if largest_int % number == 0:
+                flag = False
+        print("The largest integer is prime: ", flag)
+
+        with open("prime_numbers.txt", "w") as prime_file:
+            prime_file.write(f"List: {prime_list}\n")
+            prime_file.write(f"The sum is: {prime_sum}\n")
+            prime_file.write(f"The smallest prime number is: {prime_list[0]}\n")
+            prime_file.write(f"The largest prime number is: {prime_list[len(prime_list) - 1]}\n")
 
 """10.
 In the final main.py file, leave the results from task 8 and 9, commit and push
